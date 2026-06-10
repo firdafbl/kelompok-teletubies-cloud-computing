@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # DATABASE LAYER (MySQL)
+  # ==========================================
+  db:
+    image: mysql:8.0
+    container_name: wordpress_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rahasia_root_teletubies
+      MYSQL_DATABASE: wordpress_db
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: rahasia_wp_teletubies
+    volumes:
+      # Menggunakan Named Volume agar data database tidak hilang saat container mati
+      - db_data:/var/lib/mysql
+    networks:
+      # Isolasi Jaringan: DB hanya ditaruh di jaringan backend
+      - backend-net
+
+  # ==========================================
+  # APPLICATION LAYER (WordPress)
+  # ==========================================
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    container_name: wordpress_app
+    restart: always
+    ports:
+      - "8080:80" # Akses WordPress lewat localhost:8080
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: rahasia_wp_teletubies
+      WORDPRESS_DB_NAME: wordpress_db
+    volumes:
+      # Named Volume untuk menyimpan file source code dan upload WordPress
+      - wp_data:/var/www/html
+    networks:
+      # WordPress terhubung ke dua jaringan: 
+      # frontend agar bisa diakses browser, dan backend agar bisa konek ke database
+      - frontend-net
+      - backend-net
+
+# ==========================================
+# DEFINISI VOLUMES (Persistent Storage)
+# ==========================================
+volumes:
+  db_data:
+  wp_data:
+
+# ==========================================
+# DEFINISI NETWORKS (Isolasi Jaringan)
+# ==========================================
+networks:
+  frontend-net:
+    driver: bridge
+  backend-net:
+    driver: bridge
