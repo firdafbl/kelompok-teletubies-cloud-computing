@@ -1,0 +1,6 @@
+KONTRIBUSI ANGGOTA KELOMPOK - MINGGU 1
+--------------------------------------
+1. Firda Febiola (230403010001): Inisialisasi Git, Setup struktur folder, file .env.
+2. Nabilla Wilma (230403010017): Menyusun service Database & Volume di docker-compose.yml.
+3. Oktarina Inul (230403010038): Menyusun service WordPress & Port Forwarding.
+4. Lulu Amalia   (230403010044): Konfigurasi Network Isolation (frontend-net & backend-net).

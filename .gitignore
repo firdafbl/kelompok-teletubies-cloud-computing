@@ -1,0 +1,28 @@
+# =========================================================================
+# GITIGNORE - KELOMPOK TELETUBIES CLOUD COMPUTING
+# =========================================================================
+
+# Mengabaikan File Kredensial dan Password Rahasia (Sangat Penting!)
+.env
+.env.local
+.env.*.local
+
+# Mengabaikan Folder Volume Lokal (Tempat Docker Menyimpan Data WordPress & DB)
+# Langkah ini agar Git tidak lemot dan tidak mengupload ribuan file sistem database
+mysql_data/
+wp_data/
+#wordpress/
+db_data/
+custom_volumes/
+
+# Mengabaikan File Log dan Sampah Eksekusi
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+
+# Mengabaikan File Sampah Sistem Operasi (Windows & Mac)
+.DS_Store
+Thumbs.db
+desktop.ini
