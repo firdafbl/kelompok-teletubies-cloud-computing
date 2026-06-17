@@ -1,0 +1,6 @@
+KONTRIBUSI ANGGOTA KELOMPOK - MINGGU 2
+--------------------------------------
+1. Oktarina Inul (230403010038): Manajemen MinIO Console, pembuatan bucket 'wordpress-uploads', dan melakukan pengujian fungsionalitas penyimpanan objek (Object Storage).
+2. Nabilla Wilma (230403010017): Menyusun service Caching Layer (Redis Container) pada docker-compose.yml, integrasi awal env WordPress, serta menyelesaikan modul kuis di platform Bisa.ai.
+3. Firda Febiola (230403010001): Menyusun service Redis Monitoring Tool (Redis Commander) pada port 8081 dan menganalisis traffic data cache yang masuk dari WordPress.
+4. Lulu Amalia   (230403010044): Menyusun service pembantu 'createbuckets' untuk otomatisasi hak akses public/download pada bucket MinIO via mc client, debugging, dan penyelarasan akhir port docker-compose.yml.
