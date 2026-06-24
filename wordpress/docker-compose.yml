@@ -1,26 +1,22 @@
 version: '3.8'
 
 services:
-  # ==========================================
   # DATABASE LAYER (MySQL)
-  # ==========================================
   db:
     image: mysql:8.0
     container_name: wordpress_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rahasia_root_teletubies
-      MYSQL_DATABASE: wordpress_db
-      MYSQL_USER: wp_user
-      MYSQL_PASSWORD: rahasia_wp_teletubies
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     networks:
       - backend-net
 
-  # ==========================================
   # APPLICATION LAYER (WordPress dengan Custom Build)
-  # ==========================================
   wordpress:
     depends_on:
       - db
@@ -33,36 +29,32 @@ services:
     ports:
       - "8080:80"
     environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wp_user
-      WORDPRESS_DB_PASSWORD: rahasia_wp_teletubies
-      WORDPRESS_DB_NAME: wordpress_db
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
       - wp_data:/var/www/html
     networks:
       - frontend-net
       - backend-net
 
-  # ==========================================
-  # CACHING LAYER (Redis) - *BARU MINGGU 2*
-  # ==========================================
+  # CACHING LAYER (Redis)
   redis:
     image: redis:7-alpine
     container_name: wordpress_cache
     restart: always
-    command: redis-server --requirepass teletubies123
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
       - backend-net
 
-  # ==========================================
-  # REDIS MONITORING TOOL - *BARU MINGGU 2*
-  # ==========================================
+  # REDIS MONITORING TOOL
   redis-commander:
     image: rediscommander/redis-commander:latest
     container_name: redis_commander
     restart: always
     environment:
-      - REDIS_HOSTS=local:redis:6379:teletubies123
+      - REDIS_HOSTS=local:redis:6379:${REDIS_PASSWORD}
     ports:
       - "8081:8081"
     networks:
@@ -71,9 +63,7 @@ services:
     depends_on:
       - redis
 
-  # ==========================================
-  # OBJECT STORAGE LAYER (MinIO) - STANDAR AMAN
-  # ==========================================
+  # OBJECT STORAGE LAYER (MinIO)
   minio:
     image: minio/minio:latest
     container_name: wordpress_storage
@@ -82,8 +72,8 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ROOT_USER: teletubies_admin
-      MINIO_ROOT_PASSWORD: teletubies_password123
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
@@ -91,9 +81,7 @@ services:
       - frontend-net
       - backend-net
 
-  # ==========================================
-  # AUTOMATIC BUCKET CREATOR & PUBLIC POLICY (SERVICE PEMBANTU)
-  # ==========================================
+  # AUTOMATIC BUCKET CREATOR & PUBLIC POLICY
   createbuckets:
     image: minio/mc:latest
     depends_on:
@@ -102,7 +90,7 @@ services:
     entrypoint: >
       /bin/sh -c "
       sleep 5;
-      mc alias set lokal_s3 http://wordpress_storage:9000 teletubies_admin teletubies_password123;
+      mc alias set lokal_s3 http://wordpress_storage:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
       mc mb --ignore-existing lokal_s3/wordpress-uploads;
       mc anonymous set download lokal_s3/wordpress-uploads;
       exit 0;
@@ -111,17 +99,13 @@ services:
       - frontend-net
       - backend-net
 
-# ==========================================
 # DEFINISI VOLUMES (Persistent Storage)
-# ==========================================
 volumes:
   db_data:
   wp_data:
   minio_data:
 
-# ==========================================
 # DEFINISI NETWORKS (Isolasi Jaringan)
-# ==========================================
 networks:
   frontend-net:
     driver: bridge

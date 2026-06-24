@@ -1,0 +1,6 @@
+KONTRIBUSI ANGGOTA KELOMPOK - MINGGU 3
+--------------------------------------
+1. Firda Febiola (230403010001): Melakukan pengujian fungsionalitas dan validasi keamanan pada MinIO Object Storage setelah kredensial dipisahkan ke dalam file lingkungan (.env), serta menyusun portofolio individu di Bisa.ai.
+2. Nabilla Wilma (230403010017): Melakukan refactoring pada docker-compose.yml untuk memisahkan kredensial Caching Layer (Redis) ke dalam variabel lingkungan (.env), serta menyusun portofolio individu di Bisa.ai.
+3. Oktarina Inul (230403010038): Melakukan refactoring kredensial pada service Redis Commander agar terhubung menggunakan variabel lingkungan (.env), serta menyusun portofolio individu di Bisa.ai.
+4. Lulu Amalia   (230403010044): Melakukan refactoring kredensial Database & WordPress ke file .env, mengamankan service otomatisasi 'createbuckets', menyusun template keamanan .env.example, melakukan sinkronisasi akhir repositori GitHub, serta menyusun portofolio individu di Bisa.ai.
